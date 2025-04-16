@@ -1,0 +1,87 @@
+# Azure End to End Data Engineering Pipeline
+
+This project builds an End-to-End Azure Data Engineering Solution. A Pipeline performing Data Ingestion, ETL and Analytics all-in-one solution using Microsoft Azure Services and Power BI.
+
+## Goal of the Project
+
+The goal is to create an Azure solution which can take an On-premise Database such as the Microsoft SQL Server Management System (SSMS) and move it to the Cloud. It does so by building an ETL pipeline using Azure Data Factory, Azure Databricks and Azure Synapse Analytics.
+
+This solution can be connected to a visualization and reporting dashboard using Microsoft Power BI.
+
+Data Migration to the Cloud is one of the most common scenarios the Data Engineers encounter when building solutions for a small-medium organization.
+By working on this project, I was able to learn these skills:
+
+* Data Ingestion
+* ETL techniques using Azure Cloud Services
+* Data Transformation
+* Data Analytics and Dashboard Reporting
+* Data Security and Governance
+
+
+References: 
+Mr. K Talks Tech video on E2E Azure Data Engineering Project 
+[https://www.youtube.com/watch?v=iQ41WqhHglk&t=3624s]
+
+
+## Prerequisites:
+
+1) Microsoft SQL Server Managment System (SSMS)
+2) Azure Subscription (Azure Data Lake Storage Gen2, Azure Data Factory, Azure Key Vault, Azure Databricks, Azure Synapse Analytics, Microsoft Entra ID)
+3) Microsoft Power BI
+4) Set up "AdventureWorksLT2017" Database with credentials 'usr1'. Set up the same credentials as Secrets in Azure Key Vault
+
+The Database used for this project demonstration is:
+AdventureWorksLT2017 Sales Database
+[]
+
+## Implementation:
+
+### Part 1: Data Ingestion
+
+1. Restore the Sales Database from the .bak file.
+
+2. Setup the Microsoft Integration Runtime between Azure and the On-premise SQL Server.
+3. Create a Copy Pipeline which loads the data from local on-premise server into Azure Data Lake Storage Gen2 "bronze" directory.
+
+### Part 2: Data Transformation
+
+Data is Loaded into Azure Databricks where can create PySpark Notebooks. Cluster nodes, and compute automatically managed by the Databricks service.
+The Initial Data is cleaned and processed in two steps. Bronze to Silver and Silver to Gold. 
+0. Mounting the ADLS
+1. In Bronze to Silver transformation, we apply Attribute Type Changes and move this preprocessed data from Bronze to Silver folders.
+2. In Silver to Gold transformation, we rename the Attributes to follow similar Naming Convention throughout the database. Then we move this into Gold folder.
+
+The Final Gold-level Data is suitable for business reporting and making dashboard visualizations. Gold-level data is in "Delta" format.
+
+
+
+### Part 3: Data Loading
+
+Load the "gold" level data and run the Azure Synapse Pipeline.
+This pipeline:
+
+* Retrieves the Table Names from the gold folder.
+
+* For each table, A Stored Procedure is executed which creates and updates View in Azure SQL Database..
+
+### Part 4: Data Reporting
+
+Finally, load the data from the views using Microsoft Power BI. The Data is retrieved using DirectQuery to automatically run and update from the Cloud Pipelines.
+
+### Part 5: End-to-end Pipeline Testing
+
+Once all the components are ready, we can create a Scheduled Trigger, which will allow the Data Factory Pipeline to be run once every day.
+
+## End Notes
+
+* This project provides a great overview to many of Azure services such as Azure Data Factory, Azure Databricks, Azure Synapse Analytics.
+
+* The resources we create in Azure can be secured by adding contributors into a Security Group. This feature is offered in Microsoft Entra ID (previously Azure Active Directory).
+Thus, whoever belonging to the Security group can access and contribute to the project freely.
+
+* The Database is although small, made it easier to visualize the scope and working of various services at once.
+
+* Another thing to note is that, project could have been made smaller using only Azure Data factory but I added Databricks and Synapse Analytics to explore what these have to offer.
+
+Project done by Krishnal P.
+
